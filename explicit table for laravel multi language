@@ -1,0 +1,52 @@
+In Laravel
+// Create a model and migration to interact with the translations table.
+php artisan make:model Translation --migration
+
+// migrations
+<?php
+  public function up()
+  {
+      Schema::create('translations', function (Blueprint $table) {
+          $table->id();
+          $table->string('lang'); // Language code like 'en', 'ar', etc.
+          $table->string('key');  // Translation key, e.g., 'welcome_message'
+          $table->text('value');  // Translation value, e.g., 'Welcome' or 'مرحبا'
+          $table->timestamps();
+      });
+  }
+?>
+
+//Model class
+<?php
+  namespace App\Models;
+  
+  use Illuminate\Database\Eloquent\Model;
+  
+  class Translation extends Model
+  {
+      protected $fillable = ['lang', 'key', 'value'];
+  }
+?>
+//create helper function
+<?php
+  use App\Models\Translation;
+  
+  if (!function_exists('translate')) {
+      function translate($key, $lang = null)
+      {
+          $lang = $lang ?? app()->getLocale();
+          $translation = Translation::where('key', $key)
+                          ->where('lang', $lang)
+                          ->first();
+          return $translation ? $translation->value : $key;
+      }
+  }
+?>
+//use it now like below.
+<?php
+  echo translate('welcome_message', 'en'); // Will fetch 'Welcome' from the database
+?>
+in blade -> {{translate('welcom_message', 'en') }}
+
+Administration Interface
+You can create a CRUD interface in your admin panel to add, edit, or remove translations dynamically from the database.
