@@ -1,5 +1,6 @@
 In Laravel
 // Create a model and migration to interact with the translations table.
+
 php artisan make:model Translation --migration
 
 // migrations
@@ -16,6 +17,8 @@ php artisan make:model Translation --migration
   }
 ?>
 
+
+
 //Model class
 <?php
   namespace App\Models;
@@ -27,6 +30,9 @@ php artisan make:model Translation --migration
       protected $fillable = ['lang', 'key', 'value'];
   }
 ?>
+
+
+
 //create helper function
 <?php
   use App\Models\Translation;
@@ -42,11 +48,15 @@ php artisan make:model Translation --migration
       }
   }
 ?>
+
+
 //use it now like below.
 <?php
   echo translate('welcome_message', 'en'); // Will fetch 'Welcome' from the database
 ?>
 in blade -> {{translate('welcom_message', 'en') }}
+
+
 
 Administration Interface
 You can create a CRUD interface in your admin panel to add, edit, or remove translations dynamically from the database.
